@@ -92,12 +92,6 @@ def PrepareTab(Tab : str):
     """ t4 = td.Thread(target = ntwk_usage, args = (l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, lambda : flag_for_thread))
     t4.start() """
 
-
-
-    
-    
-
-
 def on_closing():
     global flag_for_thread
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
@@ -112,6 +106,8 @@ if __name__ == '__main__':
     root.title("Windows Performance Manager")
     tabsys = ttk.Notebook(root)
     tabsys.pack(expand = 1, fill = 'both')
+    Add_device = Frame(root)
+    tabsys.add(Add_device, text = "Add More Devices")
     LocalTabtd = td.Thread(target = PrepareTab, args = ("Local", ))
     LocalTabtd.start()
     
