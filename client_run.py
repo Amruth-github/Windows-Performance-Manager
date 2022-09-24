@@ -46,11 +46,14 @@ def disk_usage(l_disk : Label, disk_g : GraphPage, stop):
 
 def send_resources(serverSocket : socket.socket, stop):
     while not stop():
-        cpu = ps.cpu_percent()
-        ram = ps.virtual_memory()[2]
-        disk = ps.disk_usage(".")[-1]
-        serverSocket.send(pickle.loads((cpu, ram, disk)))
-        sleep(0.5)
+        try:
+            cpu = ps.cpu_percent()
+            ram = ps.virtual_memory()[2]
+            disk = ps.disk_usage(".")[-1]
+            serverSocket.send(pickle.dumps((cpu, ram, disk)))
+            sleep(0.5)
+        except OSError:
+            return
     return
 
 
