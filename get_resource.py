@@ -3,6 +3,13 @@ from time import sleep
 import psutil as ps
 from GraphPage import GraphPage
 
+def bytes_to_mb(bytes):
+  KB = 1024 # One Kilobyte is 1024 bytes
+  MB = KB * 1024 # One MB is 1024 KB
+  return int(bytes/MB)
+
+#For local Resources
+
 def monitor_cpu(l_cpu : Label, cpu_g : GraphPage, stop):
     while not stop():
         cpu_usage = ps.cpu_percent()
@@ -26,3 +33,16 @@ def disk_usage(l_disk : Label, disk_g : GraphPage, stop):
         disk_g.animate(disk)
         sleep(0.5)
     return
+
+""" def ntwk_usage(l_ntwk_up : Label, l_ntwk_down : Label, ntwk_g_up : GraphPage, ntwk_g_down : GraphPage, stop):
+    while not stop():
+        up = ps.net_io_counters().
+        down = ps.net_io_counters().bytes_recv * 10 ** -6
+        l_ntwk_down.config(text = str(down))
+        l_ntwk_up.config(text = str(up))
+        ntwk_g_up.animate(up)
+        ntwk_g_down.animate(down)
+        sleep(0.5)
+    return  """
+
+
