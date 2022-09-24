@@ -1,6 +1,3 @@
-from calendar import month_name
-from ctypes import WinError
-from http import server
 from tkinter import *
 from GraphPage import *
 from tkinter import ttk
