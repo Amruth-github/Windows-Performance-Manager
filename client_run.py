@@ -23,12 +23,12 @@ def on_closing():
 def monitor_cpu(l_cpu : Label, cpu_g : GraphPage, stop):
     while not stop():
         cpu_usage = ps.cpu_percent()
-        l_cpu.config(text = f"CPU usage : {cpu_usage}%")
+        l_cpu.config(text = f"CPU Usage : {cpu_usage}%")
         cpu_g.animate(cpu_usage)
         sleep(0.5)
     return
 
-def monitor_ram(l_ram:Label, ram_g:GraphPage, stop):
+def monitor_ram(l_ram:Label, ram_g : GraphPage, stop):
     while not stop():
         ram_usage = ps.virtual_memory()[2]
         l_ram.config(text = f"RAM Usage : {ram_usage}%")
@@ -55,7 +55,6 @@ def send_resources(serverSocket : socket.socket, stop):
         except OSError:
             return
     return
-
 
 def handleIncomingRequest(stop):
     global welcoming_socket
@@ -154,9 +153,3 @@ if __name__ == '__main__':
     thread_for_disk.start()
     root.protocol("WM_DELETE_WINDOW", on_closing)
     mainloop()
-
-
-    
-
-
-
