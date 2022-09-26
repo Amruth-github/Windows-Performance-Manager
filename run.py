@@ -55,6 +55,7 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
             ))
         except:
             messagebox.showerror("Error", "Connection Timeout!!")
+            return
         try:
             while not flag_for_thread:
                 data = pickle.loads(s.recv(102))
