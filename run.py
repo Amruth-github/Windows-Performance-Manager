@@ -10,48 +10,51 @@ import pickle
 
 def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
     if messagebox.askokcancel("Send Connection Request", f"Are you sure you want to connect to {IP}?"):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((IP, PORT))
-        tabsys1 = ttk.Notebook(tabsys)  # Tab system in the main parent tab
-        tabsys.add(tabsys1, text=NICKNAME)
-        CPU_tab = Frame(tabsys1)
-        tabsys1.add(CPU_tab, text='CPU')
-        RAM_tab = Frame(tabsys1)
-        tabsys1.add(RAM_tab, text="RAM")
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((IP, PORT))
+            tabsys1 = ttk.Notebook(tabsys)  # Tab system in the main parent tab
+            tabsys.add(tabsys1, text=NICKNAME)
+            CPU_tab = Frame(tabsys1)
+            tabsys1.add(CPU_tab, text='CPU')
+            RAM_tab = Frame(tabsys1)
+            tabsys1.add(RAM_tab, text="RAM")
 
-        ram_g = GraphPage(RAM_tab, "RAM", 1000)
-        ram_g.pack(fill='both')
+            ram_g = GraphPage(RAM_tab, "RAM", 1000)
+            ram_g.pack(fill='both')
 
-        l_ram = Label(RAM_tab, font=('Calibri', 14))
-        l_ram.pack(fill='both')
+            l_ram = Label(RAM_tab, font=('Calibri', 14))
+            l_ram.pack(fill='both')
 
-        cpu_g = GraphPage(CPU_tab, "CPU", 1000)
-        cpu_g.pack(fill='both')
+            cpu_g = GraphPage(CPU_tab, "CPU", 1000)
+            cpu_g.pack(fill='both')
 
-        l_cpu = Label(CPU_tab, font=('Calibri', 14))
-        l_cpu.pack(fill = 'both')
+            l_cpu = Label(CPU_tab, font=('Calibri', 14))
+            l_cpu.pack(fill = 'both')
 
-        Disk_tab = Frame(tabsys1)
-        tabsys1.add(Disk_tab, text="Disk")
+            Disk_tab = Frame(tabsys1)
+            tabsys1.add(Disk_tab, text="Disk")
 
-        disk_g = GraphPage(Disk_tab, "Disk", 1000)
-        disk_g.pack(fill='both')
+            disk_g = GraphPage(Disk_tab, "Disk", 1000)
+            disk_g.pack(fill='both')
 
-        l_disk = Label(Disk_tab, font=('Calibri', 14))
-        l_disk.pack(fill='both')
+            l_disk = Label(Disk_tab, font=('Calibri', 14))
+            l_disk.pack(fill='both')
 
-        crs_cpu = cursor(cpu_g.figure, hover=True)
-        crs_cpu.connect("add", lambda sel: sel.annotation.set_text(
-        f'{cpu_g.graph_name} : {round(sel.target[1], 2)}'
-        ))
-        crs_ram = cursor(ram_g.figure, hover=True)
-        crs_ram.connect("add", lambda sel: sel.annotation.set_text(
-            f'{ram_g.graph_name} : {round(sel.target[1], 2)}'
-        ))
-        crs_disk = cursor(disk_g.figure, hover=True)
-        crs_disk.connect("add", lambda sel: sel.annotation.set_text(
-            f'{disk_g.graph_name} : {round(sel.target[1], 2)}'
-        ))
+            crs_cpu = cursor(cpu_g.figure, hover=True)
+            crs_cpu.connect("add", lambda sel: sel.annotation.set_text(
+            f'{cpu_g.graph_name} : {round(sel.target[1], 2)}'
+            ))
+            crs_ram = cursor(ram_g.figure, hover=True)
+            crs_ram.connect("add", lambda sel: sel.annotation.set_text(
+                f'{ram_g.graph_name} : {round(sel.target[1], 2)}'
+            ))
+            crs_disk = cursor(disk_g.figure, hover=True)
+            crs_disk.connect("add", lambda sel: sel.annotation.set_text(
+                f'{disk_g.graph_name} : {round(sel.target[1], 2)}'
+            ))
+        except:
+            messagebox.showerror("Error", "Connection Timeout!!")
         try:
             while not flag_for_thread:
                 data = pickle.loads(s.recv(102))
