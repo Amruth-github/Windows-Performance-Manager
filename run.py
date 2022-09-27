@@ -1,6 +1,5 @@
 from tkinter import *
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 import threading as td
 from GraphPage import GraphPage
 from get_resource import *
@@ -67,6 +66,11 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
         return
 
 def launch_td(IP, PORT, NICKNAME):
+    if len(IP) == 0 or PORT == 0:
+        messagebox.showerror("Error", "All feilds are necessary!!")
+        return
+    if len(NICKNAME) == 0:
+        NICKNAME = IP
     t = td.Thread(target = connect_to_node, args = (IP, PORT, NICKNAME, tabsys))
     t.start()
 
@@ -82,8 +86,10 @@ def add_new_device(Tab : Tk):
     NICKNAME_e = Entry(Tab, textvariable=NICKNAME, font=('calibre',10,'normal'), width=50, borderwidth=2)
     NICKNAME_e.insert(END, "Enter a Nickname")
     NICKNAME_e.pack()
-
-    Button(Tab, text="Send Request!", command = lambda : launch_td(IP.get(), PORT.get(), NICKNAME.get())).pack()
+    Tab.bind("<Return>", lambda: launch_td(IP.get(), PORT.get(), NICKNAME.get()))
+    Submit = Button(Tab, text="Send Request!", command = lambda : launch_td(IP.get(), PORT.get(), NICKNAME.get()))
+    Submit.pack()
+    
 
 
 def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):

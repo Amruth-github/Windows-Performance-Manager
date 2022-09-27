@@ -7,6 +7,7 @@ from time import sleep
 import psutil as ps
 import socket
 from mplcursors import cursor
+from get_resource import monitor_cpu, monitor_ram, disk_usage
 import pickle
 
 welcoming_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,30 +21,6 @@ def on_closing():
         flag_for_thread = True
         root.destroy()
 
-def monitor_cpu(l_cpu : Label, cpu_g : GraphPage, stop):
-    while not stop():
-        cpu_usage = ps.cpu_percent()
-        l_cpu.config(text = f"CPU Usage : {cpu_usage}%")
-        cpu_g.animate(cpu_usage)
-        sleep(0.5)
-    return
-
-def monitor_ram(l_ram:Label, ram_g : GraphPage, stop):
-    while not stop():
-        ram_usage = ps.virtual_memory()[2]
-        l_ram.config(text = f"RAM Usage : {ram_usage}%")
-        ram_g.animate(ram_usage)
-        sleep(0.5)
-    return
-
-def disk_usage(l_disk : Label, disk_g : GraphPage, stop):
-    while not stop():
-        disk = ps.disk_usage(".")[-1]
-        l_disk.config(text = f"Disk Usage : {disk}%")
-        disk_g.animate(disk)
-        sleep(0.5)
-    return
-
 def send_resources(serverSocket : socket.socket, stop):
     while not stop():
         try:
@@ -53,7 +30,7 @@ def send_resources(serverSocket : socket.socket, stop):
             serverSocket.send(pickle.dumps((cpu, ram, disk)))
             sleep(0.5)
         except OSError:
-            return
+            serverSocket.close()
     return
 
 def handleIncomingRequest(stop):
@@ -80,6 +57,8 @@ if __name__ == '__main__':
     tabsys.pack(expand = 1, fill = 'both')
     Label(tabsys, text = "\n").pack()
     RAM_tab = Frame(tabsys) 
+    CPU_tab = Frame(tabsys)
+    tabsys.add(CPU_tab, text = 'CPU')
     tabsys.add(RAM_tab, text = "RAM")
     
     ram_g = GraphPage(RAM_tab, "RAM", nb_points=1000)
@@ -88,8 +67,6 @@ if __name__ == '__main__':
     l_ram = Label(RAM_tab, font=('Calibri', 14))
     l_ram.pack()
 
-    CPU_tab = Frame(tabsys)
-    tabsys.add(CPU_tab, text = 'CPU')
 
     cpu_g = GraphPage(CPU_tab,"CPU", nb_points=1000)
     cpu_g.pack(fill = 'both')
