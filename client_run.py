@@ -7,12 +7,14 @@ from time import sleep
 import psutil as ps
 import socket
 from mplcursors import cursor
-from get_resource import monitor_cpu, monitor_ram, disk_usage
+from get_resource import SLEEP_COUNT, monitor_cpu, monitor_ram, disk_usage#, ntwk_usage
 import pickle
 
 welcoming_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 flag_for_thread = False
+
+stop = lambda : flag_for_thread
 
 def on_closing():
     global flag_for_thread
@@ -27,8 +29,10 @@ def send_resources(serverSocket : socket.socket, stop):
             cpu = ps.cpu_percent()
             ram = ps.virtual_memory()[2]
             disk = ps.disk_usage(".")[-1]
+            """ up = ps.net_io_counters().bytes_sent * 10 ** -6
+            down = ps.net_io_counters().bytes_recv * 10 ** -6 """
             serverSocket.send(pickle.dumps((cpu, ram, disk)))
-            sleep(0.5)
+            sleep(SLEEP_COUNT)
         except OSError:
             serverSocket.close()
     return
@@ -83,13 +87,13 @@ if __name__ == '__main__':
     l_disk = Label(Disk_tab, font=('Calibri', 14))
     l_disk.pack()
     
-    """ Network = Frame(tabsys1)
-    tabsys1.add(Network, text = "Network")
+    """ Network = Frame(tabsys)
+    tabsys.add(Network, text = "Network")
 
-    ntwk_g_up = GraphPage(Network, "Upload", nb_points=10000)
+    ntwk_g_up = GraphPage(Network, "Upload", nb_points=1000)
     ntwk_g_up.pack(fill = 'both')
 
-    ntwk_g_down = GraphPage(Network, "Download", nb_points=10000)
+    ntwk_g_down = GraphPage(Network, "Download", nb_points=1000)
     ntwk_g_down.pack(fill = 'both')
 
     l_ntwk_up = Label(Network, font = ('Calibri', 14))
@@ -120,13 +124,15 @@ if __name__ == '__main__':
     crs_ntwk_down.connect("add", lambda sel: sel.annotation.set_text(
         f'{ntwk_g_down.graph_name} : {round(sel.target[1], 2)}'
     )) """
-    thread_for_incoming_connection_request = td.Thread(target = handleIncomingRequest, args = (lambda : flag_for_thread, ))
+    thread_for_incoming_connection_request = td.Thread(target = handleIncomingRequest, args = (stop, ))
     thread_for_incoming_connection_request.start()
-    thread_for_cpu = td.Thread(target = monitor_cpu, args = (l_cpu, cpu_g, lambda : flag_for_thread))
+    thread_for_cpu = td.Thread(target = monitor_cpu, args = (l_cpu, cpu_g, stop))
     thread_for_cpu.start()
-    thread_for_ram = td.Thread(target = monitor_ram, args = (l_ram, ram_g, lambda: flag_for_thread))
+    thread_for_ram = td.Thread(target = monitor_ram, args = (l_ram, ram_g, stop))
     thread_for_ram.start()
-    thread_for_disk = td.Thread(target = disk_usage, args = (l_disk, disk_g, lambda : flag_for_thread))
+    thread_for_disk = td.Thread(target = disk_usage, args = (l_disk, disk_g, stop))
     thread_for_disk.start()
+    """ thread_for_ntwk = td.Thread(target = ntwk_usage(l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, stop))
+    thread_for_ntwk.start() """
     root.protocol("WM_DELETE_WINDOW", on_closing)
     mainloop()

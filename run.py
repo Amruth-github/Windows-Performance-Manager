@@ -7,6 +7,9 @@ from mplcursors import cursor
 import socket
 import pickle
 
+stop = lambda : flag_for_thread
+
+
 def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
     if messagebox.askokcancel("Send Connection Request", f"Are you sure you want to connect to {IP}?"):
         try:
@@ -40,6 +43,21 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
             l_disk = Label(Disk_tab, font=('Calibri', 14))
             l_disk.pack(fill='both')
 
+            """ Network = Frame(tabsys)
+            tabsys1.add(Network, text = "Network")
+
+            ntwk_g_up = GraphPage(Network, "Upload", nb_points=1000)
+            ntwk_g_up.pack(fill = 'both')
+
+            ntwk_g_down = GraphPage(Network, "Download", nb_points=1000)
+            ntwk_g_down.pack(fill = 'both')
+
+            l_ntwk_up = Label(Network, font = ('Calibri', 14))
+            l_ntwk_down = Label(Network, font = ('Calibri', 14))
+
+            l_ntwk_up.pack()
+            l_ntwk_down.pack() """
+
             crs_cpu = cursor(cpu_g.figure, hover=True)
             crs_cpu.connect("add", lambda sel: sel.annotation.set_text(
             f'{cpu_g.graph_name} : {round(sel.target[1], 2)}'
@@ -52,6 +70,15 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
             crs_disk.connect("add", lambda sel: sel.annotation.set_text(
                 f'{disk_g.graph_name} : {round(sel.target[1], 2)}'
             ))
+            """ crs_ntwk_up = cursor(ntwk_g_up.figure, hover=True)
+            crs_ntwk_up.connect("add", lambda sel: sel.annotation.set_text(
+                f'{ntwk_g_up.graph_name} : {round(sel.target[1], 2)}'
+            ))
+
+            crs_ntwk_down = cursor(ntwk_g_down.figure, hover=True)
+            crs_ntwk_down.connect("add", lambda sel: sel.annotation.set_text(
+                f'{ntwk_g_down.graph_name} : {round(sel.target[1], 2)}'
+            )) """
         except:
             messagebox.showerror("Error", "Connection Timeout!!")
             return
@@ -61,6 +88,7 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
                 monitor_cpu_ntwk(l_cpu, cpu_g, data[0])
                 monitor_ram_ntwk(l_ram, ram_g, data[1])
                 disk_usage_ntwk(l_disk, disk_g, data[2])
+                #ntwk_usage_ntwk(l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, data[3], data[4])
         except:
             tabsys.forget(tabsys1)
         return
@@ -121,6 +149,21 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     l_disk = Label(Disk_tab, font=('Calibri', 14))
     l_disk.pack(fill='both')
 
+    """ Network = Frame(tabsys)
+    tabsys1.add(Network, text = "Network")
+
+    ntwk_g_up = GraphPage(Network, "Upload", nb_points=1000)
+    ntwk_g_up.pack(fill = 'both')
+
+    ntwk_g_down = GraphPage(Network, "Download", nb_points=1000)
+    ntwk_g_down.pack(fill = 'both')
+
+    l_ntwk_up = Label(Network, font = ('Calibri', 14))
+    l_ntwk_down = Label(Network, font = ('Calibri', 14))
+
+    l_ntwk_up.pack()
+    l_ntwk_down.pack() """
+
     tabsys.select(tabsys1)
 
     # Cursor on graph...
@@ -136,19 +179,30 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     crs_disk.connect("add", lambda sel: sel.annotation.set_text(
         f'{disk_g.graph_name} : {round(sel.target[1], 2)}'
     ))
+    """ crs_ntwk_up = cursor(ntwk_g_up.figure, hover=True)
+    crs_ntwk_up.connect("add", lambda sel: sel.annotation.set_text(
+        f'{ntwk_g_up.graph_name} : {round(sel.target[1], 2)}'
+    ))
+
+    crs_ntwk_down = cursor(ntwk_g_down.figure, hover=True)
+    crs_ntwk_down.connect("add", lambda sel: sel.annotation.set_text(
+        f'{ntwk_g_down.graph_name} : {round(sel.target[1], 2)}'
+    )) """
     # Thread to get CPU Usage
     t1 = td.Thread(target = monitor_cpu, args=(
-        l_cpu, cpu_g, lambda: flag_for_thread))
+        l_cpu, cpu_g, stop))
     t1.start()
     # Thread to get RAM Usage
     t2 = td.Thread(target = monitor_ram, args=(
-        l_ram, ram_g, lambda: flag_for_thread))
+        l_ram, ram_g, stop))
     t2.start()
     # Thread to get disk Usage
     t3 = td.Thread(target = disk_usage, args=(
-        l_disk, disk_g, lambda: flag_for_thread))
+        l_disk, disk_g, stop))
     t3.start()
     # Thread to get Network Usage
+    """ t4 = td.Thread(target=ntwk_usage, args = (l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, stop))
+    t4.start() """
 
 
 
@@ -168,7 +222,7 @@ if __name__ == '__main__':
     tabsys.pack(expand=1, fill='both')
     Add_device = Frame(root)
     tabsys.add(Add_device, text="Add More Devices")
-    LocalTabtd = td.Thread(target=PrepareTab, args=("Local", monitor_cpu, monitor_ram, disk_usage))
+    LocalTabtd = td.Thread(target = PrepareTab, args=("Local", monitor_cpu, monitor_ram, disk_usage))
     LocalTabtd.start()
     Add_dev_td = td.Thread(target = add_new_device, args = (Add_device, ))
     Add_dev_td.start()
