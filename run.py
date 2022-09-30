@@ -1,3 +1,4 @@
+#Run this on server side
 from tkinter import *
 from tkinter import ttk, messagebox
 import threading as td
