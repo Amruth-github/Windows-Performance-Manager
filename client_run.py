@@ -1,3 +1,4 @@
+#Run this on client side
 from tkinter import *
 from GraphPage import *
 from tkinter import ttk
