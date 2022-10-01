@@ -115,7 +115,6 @@ def add_new_device(Tab : Tk):
     NICKNAME_e = Entry(Tab, textvariable=NICKNAME, font=('calibre',10,'normal'), width=50, borderwidth=2)
     NICKNAME_e.insert(END, "Enter a Nickname")
     NICKNAME_e.pack()
-    Tab.bind("<Return>", lambda: launch_td(IP.get(), PORT.get(), NICKNAME.get()))
     Submit = Button(Tab, text="Send Request!", command = lambda : launch_td(IP.get(), PORT.get(), NICKNAME.get()))
     Submit.pack()
     
