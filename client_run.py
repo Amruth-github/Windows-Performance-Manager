@@ -11,6 +11,8 @@ from mplcursors import cursor
 from get_resource import SLEEP_COUNT, monitor_cpu, monitor_ram, disk_usage#, ntwk_usage
 import pickle
 
+NBPOINTS = 1000
+
 welcoming_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 flag_for_thread = False
@@ -66,14 +68,14 @@ if __name__ == '__main__':
     tabsys.add(CPU_tab, text = 'CPU')
     tabsys.add(RAM_tab, text = "RAM")
     
-    ram_g = GraphPage(RAM_tab, "RAM", nb_points=1000)
+    ram_g = GraphPage(RAM_tab, "RAM", nb_points=NBPOINTS)
     ram_g.pack(fill = 'both')
 
     l_ram = Label(RAM_tab, font=('Calibri', 14))
     l_ram.pack()
 
 
-    cpu_g = GraphPage(CPU_tab,"CPU", nb_points=1000)
+    cpu_g = GraphPage(CPU_tab,"CPU", nb_points=NBPOINTS)
     cpu_g.pack(fill = 'both')
 
     l_cpu = Label(CPU_tab, font=('Calibri', 14))
@@ -82,7 +84,7 @@ if __name__ == '__main__':
     Disk_tab = Frame(tabsys)
     tabsys.add(Disk_tab, text = "Disk")
 
-    disk_g = GraphPage(Disk_tab, "Disk", nb_points=1000)
+    disk_g = GraphPage(Disk_tab, "Disk", nb_points=NBPOINTS)
     disk_g.pack(fill = 'both')
 
     l_disk = Label(Disk_tab, font=('Calibri', 14))
@@ -91,10 +93,10 @@ if __name__ == '__main__':
     """ Network = Frame(tabsys)
     tabsys.add(Network, text = "Network")
 
-    ntwk_g_up = GraphPage(Network, "Upload", nb_points=1000)
+    ntwk_g_up = GraphPage(Network, "Upload", nb_points=NBPOINTS)
     ntwk_g_up.pack(fill = 'both')
 
-    ntwk_g_down = GraphPage(Network, "Download", nb_points=1000)
+    ntwk_g_down = GraphPage(Network, "Download", nb_points=NBPOINTS)
     ntwk_g_down.pack(fill = 'both')
 
     l_ntwk_up = Label(Network, font = ('Calibri', 14))

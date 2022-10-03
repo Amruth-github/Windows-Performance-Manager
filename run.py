@@ -8,6 +8,8 @@ from mplcursors import cursor
 import socket
 import pickle
 
+NBPOINTS = 1000
+
 stop = lambda : flag_for_thread
 
 
@@ -23,13 +25,13 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
             RAM_tab = Frame(tabsys1)
             tabsys1.add(RAM_tab, text="RAM")
 
-            ram_g = GraphPage(RAM_tab, "RAM", 1000)
+            ram_g = GraphPage(RAM_tab, "RAM", NBPOINTS)
             ram_g.pack(fill='both')
 
             l_ram = Label(RAM_tab, font=('Calibri', 14))
             l_ram.pack(fill='both')
 
-            cpu_g = GraphPage(CPU_tab, "CPU", 1000)
+            cpu_g = GraphPage(CPU_tab, "CPU", NBPOINTS)
             cpu_g.pack(fill='both')
 
             l_cpu = Label(CPU_tab, font=('Calibri', 14))
@@ -38,7 +40,7 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
             Disk_tab = Frame(tabsys1)
             tabsys1.add(Disk_tab, text="Disk")
 
-            disk_g = GraphPage(Disk_tab, "Disk", 1000)
+            disk_g = GraphPage(Disk_tab, "Disk", NBPOINTS)
             disk_g.pack(fill='both')
 
             l_disk = Label(Disk_tab, font=('Calibri', 14))
@@ -47,10 +49,10 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
             """ Network = Frame(tabsys)
             tabsys1.add(Network, text = "Network")
 
-            ntwk_g_up = GraphPage(Network, "Upload", nb_points=1000)
+            ntwk_g_up = GraphPage(Network, "Upload", nb_points=NBPOINTS)
             ntwk_g_up.pack(fill = 'both')
 
-            ntwk_g_down = GraphPage(Network, "Download", nb_points=1000)
+            ntwk_g_down = GraphPage(Network, "Download", nb_points=NBPOINTS)
             ntwk_g_down.pack(fill = 'both')
 
             l_ntwk_up = Label(Network, font = ('Calibri', 14))
@@ -128,13 +130,13 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     RAM_tab = Frame(tabsys1)
     tabsys1.add(RAM_tab, text="RAM")
 
-    ram_g = GraphPage(RAM_tab, "RAM", 1000)
+    ram_g = GraphPage(RAM_tab, "RAM", NBPOINTS)
     ram_g.pack(fill='both')
 
     l_ram = Label(RAM_tab, font=('Calibri', 14))
     l_ram.pack(fill='both')
 
-    cpu_g = GraphPage(CPU_tab, "CPU", 1000)
+    cpu_g = GraphPage(CPU_tab, "CPU", NBPOINTS)
     cpu_g.pack(fill='both')
 
     l_cpu = Label(CPU_tab, font=('Calibri', 14))
@@ -143,7 +145,7 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     Disk_tab = Frame(tabsys1)
     tabsys1.add(Disk_tab, text="Disk")
 
-    disk_g = GraphPage(Disk_tab, "Disk", 1000)
+    disk_g = GraphPage(Disk_tab, "Disk", NBPOINTS)
     disk_g.pack(fill='both')
 
     l_disk = Label(Disk_tab, font=('Calibri', 14))
@@ -152,10 +154,10 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     """ Network = Frame(tabsys)
     tabsys1.add(Network, text = "Network")
 
-    ntwk_g_up = GraphPage(Network, "Upload", nb_points=1000)
+    ntwk_g_up = GraphPage(Network, "Upload", nb_points=NBPOINTS)
     ntwk_g_up.pack(fill = 'both')
 
-    ntwk_g_down = GraphPage(Network, "Download", nb_points=1000)
+    ntwk_g_down = GraphPage(Network, "Download", nb_points=NBPOINTS)
     ntwk_g_down.pack(fill = 'both')
 
     l_ntwk_up = Label(Network, font = ('Calibri', 14))
