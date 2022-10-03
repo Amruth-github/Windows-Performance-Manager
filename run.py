@@ -100,7 +100,7 @@ def launch_td(IP, PORT, NICKNAME):
     if len(IP) == 0 or PORT == 0:
         messagebox.showerror("Error", "All feilds are necessary!!")
         return
-    if len(NICKNAME) == 0:
+    if len(NICKNAME) == 0 or NICKNAME == "Enter a Nickname":
         NICKNAME = IP
     t = td.Thread(target = connect_to_node, args = (IP, PORT, NICKNAME, tabsys))
     t.start()
