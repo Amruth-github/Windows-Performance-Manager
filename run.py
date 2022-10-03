@@ -108,7 +108,6 @@ def launch_td(IP, NICKNAME):
 
 def add_new_device(Tab : Tk):
     IP = StringVar(Tab)
-    PORT = IntVar(Tab)
     NICKNAME = StringVar(Tab)
     IP_e = Entry(Tab, textvariable=IP, font=('calibre',10,'normal'), width=50, borderwidth=2)
     IP_e.insert(END, "Enter IP Address")
