@@ -19,6 +19,8 @@ flag_for_thread = False
 
 stop = lambda : flag_for_thread
 
+PORT = 5500
+
 def on_closing():
     global flag_for_thread
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
@@ -42,7 +44,7 @@ def send_resources(serverSocket : socket.socket, stop):
 
 def handleIncomingRequest(stop):
     global welcoming_socket
-    welcoming_socket.bind(('127.0.0.1', 5500))
+    welcoming_socket.bind(('127.0.0.1', PORT))
     welcoming_socket.listen()
     while not stop():
         try:

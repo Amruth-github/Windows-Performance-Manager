@@ -9,11 +9,12 @@ import socket
 import pickle
 
 NBPOINTS = 1000
+PORT = 5500
 
 stop = lambda : flag_for_thread
 
 
-def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
+def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook):
     if messagebox.askokcancel("Send Connection Request", f"Are you sure you want to connect to {IP}?"):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -96,13 +97,13 @@ def connect_to_node(IP, PORT, NICKNAME, tabsys : ttk.Notebook):
             tabsys.forget(tabsys1)
         return
 
-def launch_td(IP, PORT, NICKNAME):
-    if len(IP) == 0 or PORT == 0:
+def launch_td(IP, NICKNAME):
+    if len(IP) == 0:
         messagebox.showerror("Error", "All feilds are necessary!!")
         return
     if len(NICKNAME) == 0 or NICKNAME == "Enter a Nickname":
         NICKNAME = IP
-    t = td.Thread(target = connect_to_node, args = (IP, PORT, NICKNAME, tabsys))
+    t = td.Thread(target = connect_to_node, args = (IP, NICKNAME, tabsys))
     t.start()
 
 def add_new_device(Tab : Tk):
@@ -112,12 +113,10 @@ def add_new_device(Tab : Tk):
     IP_e = Entry(Tab, textvariable=IP, font=('calibre',10,'normal'), width=50, borderwidth=2)
     IP_e.insert(END, "Enter IP Address")
     IP_e.pack()
-    PORT_e = Entry(Tab, textvariable=PORT, font=('calibre',10,'normal'), width=50, borderwidth=2)
-    PORT_e.pack()
     NICKNAME_e = Entry(Tab, textvariable=NICKNAME, font=('calibre',10,'normal'), width=50, borderwidth=2)
     NICKNAME_e.insert(END, "Enter a Nickname")
     NICKNAME_e.pack()
-    Submit = Button(Tab, text="Send Request!", command = lambda : launch_td(IP.get(), PORT.get(), NICKNAME.get()))
+    Submit = Button(Tab, text="Send Request!", command = lambda : launch_td(IP.get(), NICKNAME.get()))
     Submit.pack()
     
 
