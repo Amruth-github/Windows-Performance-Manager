@@ -44,7 +44,9 @@ def send_resources(serverSocket : socket.socket, stop):
 
 def handleIncomingRequest(stop):
     global welcoming_socket
-    welcoming_socket.bind((socket.gethostbyname_ex(socket.gethostname())[-1][-1], PORT))
+    IP = socket.gethostbyname_ex(socket.gethostname())[-1][-1]
+    print(IP)
+    welcoming_socket.bind((IP, PORT))
     welcoming_socket.listen()
     while not stop():
         try:

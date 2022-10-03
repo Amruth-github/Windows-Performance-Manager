@@ -98,7 +98,7 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook):
         return
 
 def launch_td(IP, NICKNAME):
-    if len(IP) == 0:
+    if len(IP) == 0 or IP == "Enter IP Address":
         messagebox.showerror("Error", "All feilds are necessary!!")
         return
     if len(NICKNAME) == 0 or NICKNAME == "Enter a Nickname":
