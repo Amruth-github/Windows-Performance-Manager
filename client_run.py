@@ -10,6 +10,7 @@ import socket
 from mplcursors import cursor
 from get_resource import SLEEP_COUNT, monitor_cpu, monitor_ram, disk_usage#, ntwk_usage
 import pickle
+import requests as rq
 
 NBPOINTS = 1000
 
@@ -44,8 +45,13 @@ def send_resources(serverSocket : socket.socket, stop):
 
 def handleIncomingRequest(stop):
     global welcoming_socket
-    IP = socket.gethostbyname_ex(socket.gethostname())[-1][-1]
-    print(IP)
+    IP = ""
+    try:
+        rq.get("https://www.google.co.in", timeout=3)
+        IP = socket.gethostbyname_ex(socket.gethostname())[-1][-1]
+    except:
+        IP = '127.0.0.1'
+    #print(IP)
     welcoming_socket.bind((IP, PORT))
     welcoming_socket.listen()
     while not stop():
