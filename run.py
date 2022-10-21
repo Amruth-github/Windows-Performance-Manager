@@ -9,7 +9,6 @@ import socket
 import pickle
 import os
 
-from startup import NULLIO
 
 NBPOINTS = 1000
 PORT = 5500

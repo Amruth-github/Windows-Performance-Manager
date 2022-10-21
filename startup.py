@@ -62,10 +62,6 @@ class Ui_MainWindow(object):
         move(self)
         MainWindow.close()
 
-class NULLIO(StringIO):
-    def write(self, txt):
-        pass
-
 import sys
 app = QtWidgets.QApplication(sys.argv)
 MainWindow = QtWidgets.QMainWindow()
