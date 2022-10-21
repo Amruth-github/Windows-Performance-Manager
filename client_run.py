@@ -1,4 +1,5 @@
 #Run this on client side
+import os
 from tkinter import *
 from GraphPage import *
 from tkinter import ttk
@@ -69,6 +70,7 @@ def handleIncomingRequest(stop):
             return
 
 if __name__ == '__main__':
+    os.system("")
     root = Tk()
     icon = PhotoImage(file="resource.png")
     root.iconphoto(False, icon)

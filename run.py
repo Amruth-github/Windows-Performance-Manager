@@ -7,6 +7,9 @@ from get_resource import *
 from mplcursors import cursor
 import socket
 import pickle
+import os
+
+from startup import NULLIO
 
 NBPOINTS = 1000
 PORT = 5500
@@ -214,6 +217,7 @@ def on_closing():
 
 
 if __name__ == '__main__':
+    from startup import *
     root = Tk()
     icon = PhotoImage(file="resource.png")
     root.iconphoto(False, icon)
