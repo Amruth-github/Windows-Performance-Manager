@@ -70,7 +70,7 @@ def handleIncomingRequest(stop):
             return
 
 if __name__ == '__main__':
-    os.system("")
+    from startup import *
     root = Tk()
     icon = PhotoImage(file="resource.png")
     root.iconphoto(False, icon)
