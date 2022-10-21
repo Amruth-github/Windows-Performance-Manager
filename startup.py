@@ -49,7 +49,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        self.label.setText(_translate("MainWindow", "   Windows Performance Manager"))
+        self.label.setText(_translate("MainWindow", "Windows Performance Manager"))
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setFont(QFont('Arial', 15))
 
     def move_progress_bar(self):
