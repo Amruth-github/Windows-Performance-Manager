@@ -10,7 +10,7 @@ import pickle
 
 NBPOINTS = 1000
 PORT = 5500
-
+NTWK_RANGE = 10000
 stop = lambda : flag_for_thread
 
 
@@ -47,20 +47,21 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook):
             l_disk = Label(Disk_tab, font=('Calibri', 14))
             l_disk.pack(fill='both')
 
-            """ Network = Frame(tabsys)
+            Network = Frame(tabsys)
             tabsys1.add(Network, text = "Network")
 
-            ntwk_g_up = GraphPage(Network, "Upload", nb_points=NBPOINTS)
+            ntwk_g_up = GraphPage(Network, "Upload", NBPOINTS, (2, 2), NTWK_RANGE)
             ntwk_g_up.pack(fill = 'both')
+            l_ntwk_up = Label(Network, font = ('Calibri', 14))
+            l_ntwk_up.pack()
 
-            ntwk_g_down = GraphPage(Network, "Download", nb_points=NBPOINTS)
+            ntwk_g_down = GraphPage(Network, "Download", NBPOINTS, (2, 2), NTWK_RANGE)
             ntwk_g_down.pack(fill = 'both')
 
-            l_ntwk_up = Label(Network, font = ('Calibri', 14))
             l_ntwk_down = Label(Network, font = ('Calibri', 14))
 
             l_ntwk_up.pack()
-            l_ntwk_down.pack() """
+            l_ntwk_down.pack()
 
             crs_cpu = cursor(cpu_g.figure, hover=True)
             crs_cpu.connect("add", lambda sel: sel.annotation.set_text(
@@ -74,7 +75,7 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook):
             crs_disk.connect("add", lambda sel: sel.annotation.set_text(
                 f'{disk_g.graph_name} : {round(sel.target[1], 2)}'
             ))
-            """ crs_ntwk_up = cursor(ntwk_g_up.figure, hover=True)
+            crs_ntwk_up = cursor(ntwk_g_up.figure, hover=True)
             crs_ntwk_up.connect("add", lambda sel: sel.annotation.set_text(
                 f'{ntwk_g_up.graph_name} : {round(sel.target[1], 2)}'
             ))
@@ -82,7 +83,7 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook):
             crs_ntwk_down = cursor(ntwk_g_down.figure, hover=True)
             crs_ntwk_down.connect("add", lambda sel: sel.annotation.set_text(
                 f'{ntwk_g_down.graph_name} : {round(sel.target[1], 2)}'
-            )) """
+            ))
         except:
             messagebox.showerror("Error", "Connection Timeout!!")
             return
@@ -92,7 +93,7 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook):
                 monitor_cpu_ntwk(l_cpu, cpu_g, data[0])
                 monitor_ram_ntwk(l_ram, ram_g, data[1])
                 disk_usage_ntwk(l_disk, disk_g, data[2])
-                #ntwk_usage_ntwk(l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, data[3], data[4])
+                ntwk_usage_ntwk(l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, data[3], data[4])
         except:
             tabsys.forget(tabsys1)
         return
@@ -149,20 +150,19 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     l_disk = Label(Disk_tab, font=('Calibri', 14))
     l_disk.pack(fill='both')
 
-    """ Network = Frame(tabsys)
+    Network = Frame(tabsys)
     tabsys1.add(Network, text = "Network")
 
-    ntwk_g_up = GraphPage(Network, "Upload", nb_points=NBPOINTS)
+    l_ntwk_up = Label(Network, font = ('Calibri', 14))
+    ntwk_g_up = GraphPage(Network, "Upload", NBPOINTS, (2, 2), NTWK_RANGE)
     ntwk_g_up.pack(fill = 'both')
+    l_ntwk_up.pack()
 
-    ntwk_g_down = GraphPage(Network, "Download", nb_points=NBPOINTS)
+    ntwk_g_down = GraphPage(Network, "Download", NBPOINTS, (2, 2), NTWK_RANGE)
     ntwk_g_down.pack(fill = 'both')
 
-    l_ntwk_up = Label(Network, font = ('Calibri', 14))
     l_ntwk_down = Label(Network, font = ('Calibri', 14))
-
-    l_ntwk_up.pack()
-    l_ntwk_down.pack() """
+    l_ntwk_down.pack()
 
     tabsys.select(tabsys1)
 
@@ -179,7 +179,7 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     crs_disk.connect("add", lambda sel: sel.annotation.set_text(
         f'{disk_g.graph_name} : {round(sel.target[1], 2)}'
     ))
-    """ crs_ntwk_up = cursor(ntwk_g_up.figure, hover=True)
+    crs_ntwk_up = cursor(ntwk_g_up.figure, hover=True)
     crs_ntwk_up.connect("add", lambda sel: sel.annotation.set_text(
         f'{ntwk_g_up.graph_name} : {round(sel.target[1], 2)}'
     ))
@@ -187,7 +187,7 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
     crs_ntwk_down = cursor(ntwk_g_down.figure, hover=True)
     crs_ntwk_down.connect("add", lambda sel: sel.annotation.set_text(
         f'{ntwk_g_down.graph_name} : {round(sel.target[1], 2)}'
-    )) """
+    ))
     # Thread to get CPU Usage
     t1 = td.Thread(target = monitor_cpu, args=(
         l_cpu, cpu_g, stop))
@@ -201,8 +201,8 @@ def PrepareTab(Tab: str, monitor_cpu, monitor_ram, disk_usage):
         l_disk, disk_g, stop))
     t3.start()
     # Thread to get Network Usage
-    """ t4 = td.Thread(target=ntwk_usage, args = (l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, stop))
-    t4.start() """
+    t4 = td.Thread(target=ntwk_usage, args = (l_ntwk_up, l_ntwk_down, ntwk_g_up, ntwk_g_down, stop))
+    t4.start()
 
 
 

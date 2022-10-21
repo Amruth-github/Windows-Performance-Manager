@@ -7,12 +7,12 @@ import matplotlib.dates as mdates
 
 class GraphPage(Frame):
 
-    def __init__(self, parent, graph_name, nb_points):
+    def __init__(self, parent, graph_name, nb_points, fig_size = (5, 5), y_lim = 100):
         # nb_points: number of points for the graph
         Frame.__init__(self, parent)
         # matplotlib figure
         self.graph_name = graph_name
-        self.figure = Figure(figsize=(5, 5), dpi=100)
+        self.figure = Figure(figsize=fig_size, dpi=100)
         self.ax = self.figure.add_subplot(111)
         # format the x-axis to show the time
         myFmt = mdates.DateFormatter("%H:%M:%S")
@@ -25,7 +25,7 @@ class GraphPage(Frame):
         self.y_data = [0 for i in range(nb_points)]
         # create the plot
         self.plot = self.ax.plot(self.x_data, self.y_data, label=self.graph_name)[0]
-        self.ax.set_ylim(0, 100)
+        self.ax.set_ylim(0, y_lim)
         self.ax.set_xlim(self.x_data[0], self.x_data[-1])
 
         label = Label(self, text=self.graph_name)

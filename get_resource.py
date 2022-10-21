@@ -39,16 +39,17 @@ def disk_usage(l_disk : Label, disk_g : GraphPage, stop):
         sleep(SLEEP_COUNT)
     return
 
-""" def ntwk_usage(l_ntwk_up : Label, l_ntwk_down : Label, ntwk_g_up : GraphPage, ntwk_g_down : GraphPage, stop):
+def ntwk_usage(l_ntwk_up : Label, l_ntwk_down : Label, ntwk_g_up : GraphPage, ntwk_g_down : GraphPage, stop):
     while not stop():
-        up = ps.net_io_counters().bytes_sent * 10 ** -6
-        down = ps.net_io_counters().bytes_recv * 10 ** -6
-        l_ntwk_down.config(text = str(down))
-        l_ntwk_up.config(text = str(up))
-        ntwk_g_up.animate(up)
-        ntwk_g_down.animate(down)
-        sleep(0.5)
-    return  """
+        bytes_sent, bytes_recv = ps.net_io_counters().bytes_sent, ps.net_io_counters().bytes_recv
+        io = ps.net_io_counters()
+        us, ds = io.bytes_sent - bytes_sent, io.bytes_recv - bytes_recv
+        l_ntwk_down.config(text = f"Download : {round(ds / SLEEP_COUNT, 2)} Kb/s")
+        l_ntwk_up.config(text = f"Upload : {round(us/SLEEP_COUNT, 2)} Kb/s")
+        ntwk_g_up.animate(us/0.5)
+        ntwk_g_down.animate(ds/0.5)
+        sleep(SLEEP_COUNT)
+    return
 #For resources from other nodes
 def monitor_cpu_ntwk(l_cpu : Label, cpu_g : GraphPage, data):
     l_cpu.config(text = f"CPU Usage : {data}%", fg = color_for_label(data))
@@ -62,9 +63,9 @@ def disk_usage_ntwk(l_disk : Label, disk_g : GraphPage, data):
     l_disk.config(text = f"CPU Usage : {data}%", fg = color_for_label(data))
     disk_g.animate(data)
 
-""" def ntwk_usage_ntwk(l_ntwk_up: Label, l_ntwk_down: Label, ntwk_g_up: GraphPage, ntwk_g_down: GraphPage, data_up, data_down):
-    l_ntwk_up.config(text = f"Upload = {data_up}")
-    l_ntwk_down.config(text = f"Download = {data_down}")
+def ntwk_usage_ntwk(l_ntwk_up: Label, l_ntwk_down: Label, ntwk_g_up: GraphPage, ntwk_g_down: GraphPage, data_up, data_down):
+    l_ntwk_up.config(text = f"Upload = {data_up} Kb/s")
+    l_ntwk_down.config(text = f"Download = {data_down} Kb/s")
     ntwk_g_up.animate(data_up)
-    ntwk_g_down.animate(data_down) """
+    ntwk_g_down.animate(data_down) 
     
