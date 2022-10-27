@@ -103,6 +103,7 @@ def on_closing():
 
 
 if __name__ == '__main__':
+    from startup import *
     root = Tk()
     icon = PhotoImage(file="resource.png")
     root.iconphoto(False, icon)
