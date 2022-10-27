@@ -40,6 +40,7 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook): # Connect to another n
                 sys_info.available_ram.pack_configure(pady=10, side= TOP, anchor="w")
         except:
             try:
+                messagebox.showinfo("Client Disconnected", f"{NICKNAME} Disconnected!")
                 tabsys.forget(GUI_for_node.tabsys1)
             except:
                 del(GUI_for_node)

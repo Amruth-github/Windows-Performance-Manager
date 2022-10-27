@@ -46,16 +46,17 @@ def send_resources(serverSocket : socket.socket, stop):
             sleep(SLEEP_COUNT)
         except OSError:
             serverSocket.close()
+            return
     return
 
 def handleIncomingRequest(stop):
     global welcoming_socket
-    IP = ""
-    try:
+    IP = "127.0.0.1"
+    """ try:
         rq.get("https://www.google.co.in", timeout=3)
         IP = socket.gethostbyname_ex(socket.gethostname())[-1][-1]
     except:
-        IP = '127.0.0.1'
+        IP = '127.0.0.1' """
     #print(IP)
     welcoming_socket.bind((IP, PORT))
     welcoming_socket.listen()
@@ -66,7 +67,7 @@ def handleIncomingRequest(stop):
                 thread_for_sending_resources = td.Thread(target = send_resources, args = (serverSocket, lambda : flag_for_thread))
                 thread_for_sending_resources.start()
         except OSError:
-            return
+            welcoming_socket.close()
 
 if __name__ == '__main__':
     root = Tk()
