@@ -45,7 +45,7 @@ def send_resources(serverSocket : socket.socket, stop):
             serverSocket.send(pickle.dumps((cpu, ram, disk, round(us/0.5, 2) , round(ds/ 0.5, 2))))
             sleep(SLEEP_COUNT)
         except OSError:
-            return
+            serverSocket.close()
     return
 
 def handleIncomingRequest(stop):
@@ -66,7 +66,6 @@ def handleIncomingRequest(stop):
                 thread_for_sending_resources = td.Thread(target = send_resources, args = (serverSocket, lambda : flag_for_thread))
                 thread_for_sending_resources.start()
         except OSError:
-            serverSocket.close()
             return
 
 if __name__ == '__main__':
