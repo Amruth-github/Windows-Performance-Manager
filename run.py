@@ -2,7 +2,6 @@
 from tkinter import *
 from tkinter import ttk, messagebox
 import threading as td
-from GraphPage import GraphPage
 from get_resource import *
 from gui_components import GUI
 from System_information import System_information
