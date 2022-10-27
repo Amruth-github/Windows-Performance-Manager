@@ -35,9 +35,9 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook): # Connect to another n
                 disk_usage_ntwk(GUI_for_node.l_disk, GUI_for_node.disk_g, data[2])
                 ntwk_usage_ntwk(GUI_for_node.l_ntwk_up, GUI_for_node.l_ntwk_down, GUI_for_node.ntwk_g_up, GUI_for_node.ntwk_g_down, data[3], data[4])
                 sys_info.used_ram.config(text = f"Used RAM: {round(sys_info.information['Total RAM'] * data[1]/100, 2)} GB")
-                sys_info.used_ram.pack_configure(pady=20, side= TOP, anchor="w")
+                sys_info.used_ram.pack_configure(pady=10, side= TOP, anchor="w")
                 sys_info.available_ram.config(text = f"Available RAM: {round(sys_info.information['Total RAM'] - sys_info.information['Total RAM'] * data[1]/100, 2)} GB")
-                sys_info.available_ram.pack_configure(pady=20, side= TOP, anchor="w")
+                sys_info.available_ram.pack_configure(pady=10, side= TOP, anchor="w")
         except:
             try:
                 tabsys.forget(GUI_for_node.tabsys1)
