@@ -51,13 +51,12 @@ def send_resources(serverSocket : socket.socket, stop):
 
 def handleIncomingRequest(stop):
     global welcoming_socket
-    IP = "127.0.0.1"
-    """ try:
+    IP = ""
+    try:
         rq.get("https://www.google.co.in", timeout=3)
         IP = socket.gethostbyname_ex(socket.gethostname())[-1][-1]
     except:
-        IP = '127.0.0.1' """
-    #print(IP)
+        IP = '127.0.0.1'
     welcoming_socket.bind((IP, PORT))
     welcoming_socket.listen()
     while not stop():
