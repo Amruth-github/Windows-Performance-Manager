@@ -1,7 +1,7 @@
 from tkinter import Label
 from time import sleep
 import psutil as ps
-from GraphPage import GraphPage
+from GraphPage import *
 
 SLEEP_COUNT = 0.5
 
@@ -60,7 +60,7 @@ def monitor_ram_ntwk(l_ram:Label, ram_g:GraphPage, data):
     ram_g.animate(data)
 
 def disk_usage_ntwk(l_disk : Label, disk_g : GraphPage, data):
-    l_disk.config(text = f"CPU Usage : {data}%", fg = color_for_label(data))
+    l_disk.config(text = f"Disk Usage : {data}%", fg = color_for_label(data))
     disk_g.animate(data)
 
 def ntwk_usage_ntwk(l_ntwk_up: Label, l_ntwk_down: Label, ntwk_g_up: GraphPage, ntwk_g_down: GraphPage, data_up, data_down):
@@ -68,4 +68,13 @@ def ntwk_usage_ntwk(l_ntwk_up: Label, l_ntwk_down: Label, ntwk_g_up: GraphPage, 
     l_ntwk_down.config(text = f"Download = {data_down} Kb/s")
     ntwk_g_up.animate(data_up)
     ntwk_g_down.animate(data_down) 
+
+#Update RAM Reading in system information Tab
+def update_ram_readings(sys_info, stop):
+    while not stop():
+        sys_info.used_ram.config(text = f"Used RAM: {str(round(ps.virtual_memory().used/1000000000, 2)) + ' GB'} ")
+        sys_info.used_ram.pack_configure(pady=10, side= TOP, anchor="w")
+        sys_info.available_ram.config(text = f"Available RAM: {str(round(ps.virtual_memory().available/1000000000, 2)) + ' GB'}")
+        sys_info.available_ram.pack_configure(pady=10, side= TOP, anchor="w")
+        sleep(SLEEP_COUNT)
     

@@ -1,0 +1,1 @@
+pyinstaller --add-data resource.png;. --icon=resource.png --noconsole -n "Windows Performance Manager" client_run.py
