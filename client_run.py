@@ -1,5 +1,6 @@
 #Run this on client side
 from tkinter import *
+from wsgiref.simple_server import server_version
 from GraphPage import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -47,6 +48,7 @@ def send_resources(serverSocket : socket.socket, stop):
         except OSError:
             serverSocket.close()
             return
+    serverSocket.close()
     return
 
 def handleIncomingRequest(stop):
@@ -65,8 +67,9 @@ def handleIncomingRequest(stop):
             if messagebox.askokcancel("Incoming Connection Request", "Do you want to proceed?"):
                 thread_for_sending_resources = td.Thread(target = send_resources, args = (serverSocket, lambda : flag_for_thread))
                 thread_for_sending_resources.start()
-        except OSError:
-            welcoming_socket.close()
+        except:
+            return
+    return
 
 if __name__ == '__main__':
     root = Tk()

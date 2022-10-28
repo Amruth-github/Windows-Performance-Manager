@@ -14,7 +14,6 @@ PORT = 5500
 NTWK_RANGE = 10000
 stop = lambda : flag_for_thread
 
-
 def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook): # Connect to another node and prepare the GUI on the server side.
     if messagebox.askokcancel("Send Connection Request", f"Are you sure you want to connect to {IP}?"):
         try:
@@ -38,9 +37,11 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook): # Connect to another n
                 sys_info.used_ram.pack_configure(pady=10, side= TOP, anchor="w")
                 sys_info.available_ram.config(text = f"Available RAM: {round(sys_info.information['Total RAM'] - sys_info.information['Total RAM'] * data[1]/100, 2)} GB")
                 sys_info.available_ram.pack_configure(pady=10, side= TOP, anchor="w")
+            s.close()
         except:
             try:
                 messagebox.showinfo("Client Disconnected", f"{NICKNAME} Disconnected!")
+                s.close()
                 tabsys.forget(GUI_for_node.tabsys1)
             except:
                 del(GUI_for_node)
@@ -58,7 +59,7 @@ def launch_td(IP, NICKNAME):
 def add_new_device(Tab : Tk):
     IP = StringVar(Tab)
     NICKNAME = StringVar(Tab)
-    IP_e = Entry(Tab, textvariable=IP, font=('calibre',10,'normal'), width=50, borderwidth=2)
+    IP_e = Entry(Tab, textvariable=IP, font=('calibri',10,'normal'), width=50, borderwidth=2)
     IP_e.insert(END, "Enter IP Address")
     IP_e.pack()
     NICKNAME_e = Entry(Tab, textvariable=NICKNAME, font=('calibre',10,'normal'), width=50, borderwidth=2)
@@ -89,7 +90,7 @@ def PrepareTab(monitor_cpu, monitor_ram, disk_usage): # Tab system in the main p
     # Thread to get Network Usage
     t4 = td.Thread(target=ntwk_usage, args = (GUI_for_node.l_ntwk_up, GUI_for_node.l_ntwk_down, GUI_for_node.ntwk_g_up, GUI_for_node.ntwk_g_down, stop))
     t4.start()
-
+    # Thread for updating RAM reading in system information tab
     t5 = td.Thread(target = update_ram_readings, args = (sys_info, stop))
     t5.start()
 
