@@ -27,7 +27,7 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook): # Connect to another n
             messagebox.showerror("Error", "Connection Timeout!!")
             return
         try:
-            while not flag_for_thread:
+            while not stop():
                 data = pickle.loads(s.recv(102))
                 monitor_cpu_ntwk(GUI_for_node.l_cpu, GUI_for_node.cpu_g, data[0])
                 monitor_ram_ntwk(GUI_for_node.l_ram, GUI_for_node.ram_g, data[1])
@@ -40,11 +40,10 @@ def connect_to_node(IP, NICKNAME, tabsys : ttk.Notebook): # Connect to another n
             s.close()
         except:
             try:
-                messagebox.showinfo("Client Disconnected", f"{NICKNAME} Disconnected!")
-                s.close()
                 tabsys.forget(GUI_for_node.tabsys1)
+                s.close()
             except:
-                del(GUI_for_node)
+                return
         return
 
 def launch_td(IP, NICKNAME):

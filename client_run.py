@@ -1,6 +1,5 @@
 #Run this on client side
 from tkinter import *
-from wsgiref.simple_server import server_version
 from GraphPage import *
 from tkinter import ttk
 from tkinter import messagebox
