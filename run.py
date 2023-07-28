@@ -9,6 +9,8 @@ import socket
 import pickle
 
 
+threads = []
+
 NBPOINTS = 1000
 PORT = 5500
 NTWK_RANGE = 10000
@@ -92,6 +94,7 @@ def PrepareTab(monitor_cpu, monitor_ram, disk_usage): # Tab system in the main p
     # Thread for updating RAM reading in system information tab
     t5 = td.Thread(target = update_ram_readings, args = (sys_info, stop))
     t5.start()
+    threads.extend([t1, t2, t3, t4, t5])
 
 
 
@@ -99,6 +102,8 @@ def on_closing():
     global flag_for_thread
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
         flag_for_thread = True
+        for td in threads:
+            td.join()
         root.destroy()
 
 
@@ -116,6 +121,7 @@ if __name__ == '__main__':
     LocalTabtd.start()
     Add_dev_td = td.Thread(target = add_new_device, args = (Add_device, ))
     Add_dev_td.start()
+    threads.extend([LocalTabtd, Add_dev_td])
     
 
     flag_for_thread = False  # A flag to manage all threads

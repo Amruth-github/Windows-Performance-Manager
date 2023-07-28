@@ -21,6 +21,8 @@ flag_for_thread = False
 
 stop = lambda : flag_for_thread
 
+threads = []
+
 PORT = 5500
 
 def on_closing():
@@ -28,6 +30,8 @@ def on_closing():
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
         welcoming_socket.close()
         flag_for_thread = True
+        for td in threads:
+            td.join()
         root.destroy()
 
 def send_resources(serverSocket : socket.socket, stop):
@@ -66,6 +70,7 @@ def handleIncomingRequest(stop):
             if messagebox.askokcancel("Incoming Connection Request", "Do you want to proceed?"):
                 thread_for_sending_resources = td.Thread(target = send_resources, args = (serverSocket, lambda : flag_for_thread))
                 thread_for_sending_resources.start()
+                threads.append(thread_for_sending_resources)
         except:
             return
     return
@@ -93,5 +98,6 @@ if __name__ == '__main__':
     thread_for_ntwk.start()
     thread_for_updating_ram = td.Thread(target = update_ram_readings, args = (sys_info, stop))
     thread_for_updating_ram.start()
+    threads.extend([thread_for_incoming_connection_request, thread_for_cpu, thread_for_ram, thread_for_disk, thread_for_ntwk, thread_for_updating_ram])
     root.protocol("WM_DELETE_WINDOW", on_closing)
     mainloop()
